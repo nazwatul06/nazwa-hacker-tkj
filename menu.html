@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+
+    <!-- Membuat tampilan menyesuaikan ukuran layar HP dan laptop -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Judul website pada tab browser -->
+    <title>MenuFlex | Menu Digital Cafe</title>
+
+    <style>
+        /* ===== 1. PENGATURAN DASAR ===== */
+
+        /* Mengatur warna utama dan font website */
+        :root {
+            --primary: #245c49;
+            --primary-dark: #173c30;
+            --background: #f5f7f3;
+            --white: #ffffff;
+            --text: #25352d;
+            --muted: #6b776f;
+            --border: #e1e8e1;
+        }
+
+        /* Menghapus margin bawaan dan mengatur ukuran elemen */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Mengatur tampilan seluruh halaman */
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Membatasi lebar konten agar nyaman dibaca */
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        /* ===== 2. BAGIAN HEADER ===== */
+
+        header {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 18px 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            color: var(--primary);
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .tagline {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        /* ===== 3. BAGIAN SAMBUTAN ===== */
+
+        .hero {
+            background: var(--primary-dark);
+            color: var(--white);
+            padding: 45px 25px;
+            margin-top: 25px;
+            border-radius: 18px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            color: #e0ece5;
+        }
+
+        /* ===== 4. BAGIAN PENCARIAN DAN FILTER ===== */
+
+        .filters {
+            background: var(--white);
+            padding: 22px;
+            margin: 25px 0;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+        }
+
+        .filters h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        /* Menyamakan tampilan kolom input dan pilihan */
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccd7ce;
+            border-radius: 8px;
+            font-size: 15px;
+            background: var(--white);
+            color: var(--text);
+        }
+
+        input:focus,
+        select:focus {
+            outline: 2px solid #8ab6a0;
+            border-color: var(--primary);
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 15px;
+        }
+
+        .field label {
+            display: block;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        /* ===== 5. DAFTAR MENU ===== */
+
+        .menu-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .menu-heading h2 {
+            font-size: 23px;
+        }
+
+        #menu-count {
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        /* Membuat kartu menu tersusun otomatis */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+            padding-bottom: 35px;
+        }
+
+        /* Tampilan setiap kartu makanan */
+        .menu-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Area gambar atau ilustrasi makanan */
+        .menu-image {
+            height: 150px;
+            background: #e7efe8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 65px;
+        }
+
+        .menu-info {
+            padding: 16px;
+        }
+
+        .menu-info h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .category-label {
+            display: inline-block;
+            color: var(--primary);
+            background: #e9f3ec;
+            padding: 3px 9px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .description {
+            color: var(--muted);
+            font-size: 14px;
+            min-height: 45px;
+        }
+
+        .price {
+            color: var(--primary);
+            font-size: 19px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        /* Pesan ketika tidak ada menu yang cocok */
+        .empty-message {
+            display: none;
+            background: var(--white);
+            padding: 25px;
+            text-align: center;
+            border-radius: 12px;
+            color: var(--muted);
+            margin-bottom: 35px;
+        }
+
+        /* ===== 6. BAGIAN FOOTER ===== */
+
+        footer {
+            background: var(--primary-dark);
+            color: var(--white);
+            text-align: center;
+            padding: 22px 10px;
+            font-size: 13px;
+        }
+
+        /* ===== 7. RESPONSIVE UNTUK TABLET DAN HP ===== */
+
+        /* Tampilan tablet: dua kartu per baris */
+        @media (max-width: 800px) {
+            .menu-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .filter-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .search-field {
+                grid-column: 1 / -1;
+            }
+        }
+
+        /* Tampilan HP: satu kartu per baris */
+        @media (max-width: 520px) {
+            .navbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .hero {
+                padding: 32px 18px;
+            }
+
+            .hero h1 {
+                font-size: 26px;
+            }
+
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-field {
+                grid-column: auto;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .menu-image {
+                height: 180px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ===== HEADER WEBSITE ===== -->
+    <header>
+        <div class="container navbar">
+            <!-- Nama atau identitas website -->
+            <div class="logo">MenuFlex.</div>
+
+            <!-- Deskripsi singkat website -->
+            <div class="tagline">
+                Menu digital yang praktis dan mudah
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- ===== BAGIAN SAMBUTAN ===== -->
+        <section class="hero">
+            <h1>Temukan Menu Favoritmu!</h1>
+            <p>
+                Pilih makanan sesuai selera dan anggaranmu.
+                Praktis, cepat, dan tanpa buku menu.
+            </p>
+        </section>
+
+        <!-- ===== BAGIAN PENCARIAN DAN FILTER ===== -->
+        <section class="filters">
+            <h2>Cari Menu Pilihanmu</h2>
+
+            <div class="filter-grid">
+
+                <!-- Kolom pencarian nama makanan -->
+                <div class="field search-field">
+                    <label for="search">Nama menu</label>
+                    <input
+                        type="text"
+                        id="search"
+                        placeholder="Contoh: nasi ayam..."
+                    >
+                </div>
+
+                <!-- Pilihan kategori menu -->
+                <div class="field">
+                    <label for="category">Kategori</label>
+                    <select id="category">
+                        <option value="Semua">Semua kategori</option>
+                        <option value="Makanan">Makanan</option>
+                        <option value="Camilan">Camilan</option>
+                        <option value="Minuman">Minuman</option>
+                    </select>
+                </div>
+
+                <!-- Pilihan batas anggaran -->
+                <div class="field">
+                    <label for="budget">Anggaran maksimal</label>
+                    <select id="budget">
+                        <option value="10000">Rp10.000</option>
+                        <option value="15000">Rp15.000</option>
+                        <option value="20000" selected>Rp20.000</option>
+                        <option value="30000">Rp30.000</option>
+                        <option value="1000000">Semua harga</option>
+                    </select>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===== BAGIAN DAFTAR MENU ===== -->
+        <section class="menu-section">
+
+            <div class="menu-heading">
+                <h2>Daftar Menu</h2>
+
+                <!-- Jumlah menu akan berubah sesuai hasil filter -->
+                <span id="menu-count">0 menu</span>
+            </div>
+
+            <!-- JavaScript akan memasukkan kartu menu ke bagian ini -->
+            <div class="menu-grid" id="menu-list"></div>
+
+            <!-- Pesan jika hasil pencarian kosong -->
+            <div class="empty-message" id="empty-message">
+                <h3>Menu tidak ditemukan</h3>
+                <p>
+                    Coba ubah kata pencarian, kategori,
+                    atau batas anggaranmu.
+                </p>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ===== FOOTER WEBSITE ===== -->
+    <footer>
+        <p>© 2026 MenuFlex | Menu Digital untuk Semua</p>
+        <p>Proyek pembelajaran HTML, CSS, dan JavaScript</p>
+    </footer>
+
+    <script>
+        // ===== 1. DATA MENU =====
+        // Data berikut masih berupa contoh.
+        // Kamu bisa mengganti nama, harga, kategori, dan deskripsi.
+
+        const menus = [
+            {
+                name: "Nasi Ayam",
+                price: 18000,
+                category: "Makanan",
+                description: "Nasi hangat dengan ayam dan saus pilihan.",
+                emoji: "🍛"
+            },
+            {
+                name: "Mie Pedas",
+                price: 15000,
+                category: "Makanan",
+                description: "Mie gurih dengan pilihan rasa pedas.",
+                emoji: "🍜"
+            },
+            {
+                name: "Kentang Goreng",
+                price: 12000,
+                category: "Camilan",
+                description: "Kentang goreng renyah untuk menemani santai.",
+                emoji: "🍟"
+            },
+            {
+                name: "Roti Bakar",
+                price: 14000,
+                category: "Camilan",
+                description: "Roti panggang dengan topping manis.",
+                emoji: "🍞"
+            },
+            {
+                name: "Es Cokelat",
+                price: 10000,
+                category: "Minuman",
+                description: "Minuman cokelat dingin yang menyegarkan.",
+                emoji: "🥤"
+            },
+            {
+                name: "Kopi Susu",
+                price: 16000,
+                category: "Minuman",
+                description: "Kombinasi kopi dan susu yang nikmat.",
+                emoji: "🧋"
+            },
+            {
+                name: "Nasi Goreng",
+                price: 20000,
+                category: "Makanan",
+                description: "Nasi goreng dengan bumbu khas.",
+                emoji: "🍳"
+            },
+            {
+                name: "Pisang Cokelat",
+                price: 10000,
+                category: "Camilan",
+                description: "Pisang dengan cokelat manis.",
+                emoji: "🍌"
+            },
+            {
+                name: "Teh Es",
+                price: 5000,
+                category: "Minuman",
+                description: "Teh dingin sederhana dan menyegarkan.",
+                emoji: "🧋"
+            }
+        ];
+
+        // ===== 2. MENGAMBIL ELEMEN HTML =====
+        // Elemen ini digunakan oleh JavaScript untuk memperbarui tampilan.
+
+        const searchInput = document.getElementById("search");
+        const categorySelect = document.getElementById("category");
+        const budgetSelect = document.getElementById("budget");
+        const menuList = document.getElementById("menu-list");
+        const menuCount = document.getElementById("menu-count");
+        const emptyMessage = document.getElementById("empty-message");
+
+        // ===== 3. FORMAT HARGA RUPIAH =====
+        // Contoh: angka 18000 menjadi tulisan Rp18.000.
+
+        function formatRupiah(price) {
+            return "Rp" + price.toLocaleString("id-ID");
+        }
+
+        // ===== 4. MENAMPILKAN DAFTAR MENU =====
+
+        function displayMenus(menuData) {
+            // Kosongkan tampilan sebelum menambahkan hasil baru.
+            menuList.innerHTML = "";
+
+            // Perbarui jumlah menu yang ditemukan.
+            menuCount.textContent = menuData.length + " menu";
+
+            // Tampilkan pesan jika tidak ada hasil.
+            emptyMessage.style.display =
+                menuData.length === 0 ? "block" : "none";
+
+            // Buat kartu untuk setiap menu yang sesuai.
+            menuData.forEach(function(menu) {
+                const card = document.createElement("article");
+
+                card.className = "menu-card";
+
+                // Gunakan textContent untuk teks dari data menu.
+                // Ini lebih aman daripada memasukkan teks langsung
+                // ke dalam HTML menggunakan innerHTML.
+
+                const image = document.createElement("div");
+                image.className = "menu-image";
+                image.setAttribute("aria-hidden", "true");
+                image.textContent = menu.emoji;
+
+                const info = document.createElement("div");
+                info.className = "menu-info";
+
+                const title = document.createElement("h3");
+                title.textContent = menu.name;
+
+                const category = document.createElement("span");
+                category.className = "category-label";
+                category.textContent = menu.category;
+
+                const description = document.createElement("p");
+                description.className = "description";
+                description.textContent = menu.description;
+
+                const price = document.createElement("p");
+                price.className = "price";
+                price.textContent = formatRupiah(menu.price);
+
+                // Susun elemen menjadi satu kartu menu.
+                info.append(title, category, description, price);
+                card.append(image, info);
+
+                // Masukkan kartu ke dalam daftar menu.
+                menuList.appendChild(card);
+            });
+        }
+
+        // ===== 5. FUNGSI PENCARIAN DAN FILTER =====
+
+        function filterMenus() {
+            // Ambil nilai terbaru dari kolom pencarian dan filter.
+            const keyword = searchInput.value
+                .trim()
+                .toLowerCase();
+
+            const selectedCategory = categorySelect.value;
+            const maxBudget = Number(budgetSelect.value);
+
+            // Pilih menu yang cocok dengan semua kriteria.
+            const filteredMenus = menus.filter(function(menu) {
+
+                // Periksa nama dan deskripsi menu.
+                const matchesKeyword =
+                    menu.name.toLowerCase().includes(keyword) ||
+                    menu.description.toLowerCase().includes(keyword);
+
+                // Periksa kategori yang dipilih.
+                const matchesCategory =
+                    selectedCategory === "Semua" ||
+                    menu.category === selectedCategory;
+
+                // Periksa apakah harga sesuai anggaran.
+                const matchesBudget = menu.price <= maxBudget;
+
+                // Menu harus memenuhi ketiga kriteria.
+                return matchesKeyword &&
+                       matchesCategory &&
+                       matchesBudget;
+            });
+
+            // Tampilkan hasil filter ke halaman.
+            displayMenus(filteredMenus);
+        }
+
+        // ===== 6. MENJALANKAN FILTER OTOMATIS =====
+        // Setiap kali pengguna mengetik atau mengubah pilihan,
+        // daftar menu akan diperbarui secara otomatis.
+
+        searchInput.addEventListener("input", filterMenus);
+        categorySelect.addEventListener("change", filterMenus);
+        budgetSelect.addEventListener("change", filterMenus);
+
+        // ===== 7. TAMPILKAN MENU SAAT WEBSITE DIBUKA =====
+        // Menampilkan seluruh menu yang sesuai dengan filter awal.
+
+        filterMenus();
+    </script>
+
+</body>
+</html>
