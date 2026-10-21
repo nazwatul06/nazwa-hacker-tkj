@@ -1,0 +1,1111 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+
+    <!-- Agar tampilan menyesuaikan ukuran layar HP dan laptop -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Informasi website pada tab browser -->
+    <title>MenuFlex | Menu Digital Cafe</title>
+    <meta name="description" content="MenuFlex membantu pelanggan menemukan menu cafe sesuai selera dan anggaran.">
+
+    <style>
+        /* =========================
+           1. PENGATURAN DASAR
+        ========================= */
+
+        /* Mengatur warna utama yang digunakan website */
+        :root {
+            --primary: #176b50;
+            --primary-dark: #104b39;
+            --background: #f6f8f5;
+            --surface: #ffffff;
+            --text: #24352d;
+            --muted: #6b786f;
+            --border: #e2e8e2;
+            --danger: #c0392b;
+        }
+
+        /* Menghapus jarak bawaan dan mengatur box model */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* Lebar konten utama website */
+        .container {
+            width: min(1120px, 92%);
+            margin: 0 auto;
+        }
+
+        /* =========================
+           2. NAVIGASI WEBSITE
+        ========================= */
+
+        header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .navbar {
+            min-height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .logo {
+            color: var(--primary);
+            font-size: 1.55rem;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--text);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .cart-button {
+            border: none;
+            background: var(--primary);
+            color: white;
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-weight: bold;
+        }
+
+        /* =========================
+           3. BAGIAN PEMBUKA
+        ========================= */
+
+        .hero {
+            padding: 58px 0 38px;
+        }
+
+        .hero-box {
+            background: var(--primary-dark);
+            color: white;
+            border-radius: 24px;
+            padding: 42px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .hero-label {
+            color: #c8e6d5;
+            font-size: 0.85rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.3rem);
+            line-height: 1.15;
+            margin: 12px 0;
+        }
+
+        .hero p {
+            max-width: 520px;
+            color: #e0eee6;
+            margin-bottom: 22px;
+        }
+
+        .hero-link {
+            display: inline-block;
+            background: white;
+            color: var(--primary-dark);
+            padding: 12px 18px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .hero-icon {
+            font-size: clamp(5rem, 12vw, 9rem);
+            line-height: 1;
+        }
+
+        /* =========================
+           4. PENCARIAN DAN FILTER
+        ========================= */
+
+        .menu-section {
+            padding: 22px 0 60px;
+        }
+
+        .section-heading {
+            margin-bottom: 22px;
+        }
+
+        .section-heading h2 {
+            font-size: clamp(1.6rem, 4vw, 2rem);
+        }
+
+        .section-heading p {
+            color: var(--muted);
+            margin-top: 5px;
+        }
+
+        .filter-panel {
+            background: var(--surface);
+            padding: 20px;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 26px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            min-height: 46px;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            background: white;
+            color: var(--text);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 1px;
+        }
+
+        /* =========================
+           5. KARTU MENU
+        ========================= */
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .menu-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 24px rgba(20, 60, 40, 0.08);
+        }
+
+        /* Area gambar atau ilustrasi makanan */
+        .menu-image {
+            height: 175px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eaf2e9;
+            font-size: 5rem;
+        }
+
+        .menu-content {
+            padding: 18px;
+        }
+
+        .menu-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .menu-top h3 {
+            font-size: 1.1rem;
+        }
+
+        .category-tag {
+            display: inline-block;
+            background: #edf5ee;
+            color: var(--primary);
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        .menu-description {
+            font-size: 0.9rem;
+            color: var(--muted);
+            margin: 10px 0;
+            min-height: 45px;
+        }
+
+        .menu-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu-price {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 1.05rem;
+        }
+
+        .add-button {
+            border: none;
+            background: var(--primary);
+            color: white;
+            border-radius: 9px;
+            padding: 9px 12px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .add-button:hover,
+        .cart-button:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Tombol tidak aktif untuk menu habis */
+        .add-button:disabled {
+            background: #b9c2bb;
+            cursor: not-allowed;
+        }
+
+        .stock-status {
+            font-size: 0.8rem;
+            margin-top: 10px;
+            color: var(--primary);
+        }
+
+        .stock-status.unavailable {
+            color: var(--danger);
+        }
+
+        /* Pesan saat hasil pencarian kosong */
+        .empty-state {
+            display: none;
+            text-align: center;
+            padding: 42px 15px;
+            color: var(--muted);
+            background: white;
+            border: 1px dashed var(--border);
+            border-radius: 14px;
+        }
+
+        /* =========================
+           6. KERANJANG PESANAN
+        ========================= */
+
+        .cart-section {
+            padding: 0 0 60px;
+        }
+
+        .cart-box {
+            background: white;
+            padding: 24px;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+        }
+
+        .cart-box h2 {
+            margin-bottom: 12px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .cart-item small {
+            color: var(--muted);
+            display: block;
+        }
+
+        .cart-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quantity-button,
+        .remove-button {
+            border: 1px solid var(--border);
+            background: white;
+            border-radius: 7px;
+            min-width: 30px;
+            min-height: 30px;
+        }
+
+        .remove-button {
+            color: var(--danger);
+            padding: 4px 8px;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            padding-top: 20px;
+        }
+
+        .clear-button {
+            margin-top: 14px;
+            background: white;
+            color: var(--danger);
+            border: 1px solid #e5c5c2;
+            padding: 9px 12px;
+            border-radius: 9px;
+        }
+
+        .cart-empty {
+            color: var(--muted);
+            padding: 10px 0;
+        }
+
+        /* =========================
+           7. FOOTER
+        ========================= */
+
+        footer {
+            background: #eaf0e9;
+            padding: 28px 0;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        footer strong {
+            color: var(--primary);
+        }
+
+        /* =========================
+           8. RESPONSIVE
+           Tampilan untuk HP dan tablet
+        ========================= */
+
+        @media (max-width: 800px) {
+            .menu-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .filter-panel {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .search-group {
+                grid-column: 1 / -1;
+            }
+
+            .hero-box {
+                padding: 30px;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .navbar {
+                min-height: 64px;
+            }
+
+            .nav-links {
+                gap: 12px;
+            }
+
+            .nav-links a {
+                font-size: 0.85rem;
+            }
+
+            .logo {
+                font-size: 1.25rem;
+            }
+
+            .cart-button {
+                padding: 8px 10px;
+                font-size: 0.85rem;
+            }
+
+            .hero {
+                padding-top: 28px;
+            }
+
+            .hero-box {
+                padding: 26px 22px;
+            }
+
+            .hero-icon {
+                display: none;
+            }
+
+            .filter-panel {
+                grid-template-columns: 1fr;
+            }
+
+            .search-group {
+                grid-column: auto;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .menu-image {
+                height: 160px;
+            }
+
+            .cart-box {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================
+         NAVIGASI UTAMA
+    ========================== -->
+    <header>
+        <div class="container navbar">
+
+            <!-- Nama dan logo website -->
+            <a class="logo" href="#">Menu<span>Flex.</span></a>
+
+            <!-- Tautan menuju bagian website -->
+            <nav class="nav-links" aria-label="Navigasi utama">
+                <a href="#beranda">Beranda</a>
+                <a href="#menu">Menu</a>
+            </nav>
+
+            <!-- Tombol menuju keranjang -->
+            <button class="cart-button" id="cartLink">
+                🛒 Pesanan (<span id="cartCount">0</span>)
+            </button>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- =========================
+             BAGIAN BERANDA
+        ========================== -->
+        <section class="hero" id="beranda">
+            <div class="container">
+                <div class="hero-box">
+                    <div>
+                        <p class="hero-label">Menu digital lebih praktis</p>
+
+                        <h1>Temukan Menu Favoritmu!</h1>
+
+                        <p>
+                            Pilih makanan dan minuman favoritmu dengan mudah.
+                            Cari menu sesuai selera dan anggaran tanpa harus
+                            menunggu buku menu.
+                        </p>
+
+                        <!-- Tombol menuju daftar menu -->
+                        <a href="#menu" class="hero-link">
+                            Jelajahi Menu →
+                        </a>
+                    </div>
+
+                    <!-- Ilustrasi dekoratif -->
+                    <div class="hero-icon" aria-hidden="true">🍽️</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================
+             DAFTAR MENU
+        ========================== -->
+        <section class="menu-section" id="menu">
+            <div class="container">
+
+                <div class="section-heading">
+                    <h2>Menu Kami</h2>
+                    <p>Pilih menu sesuai selera dan anggaranmu.</p>
+                </div>
+
+                <!-- Form pencarian dan filter -->
+                <div class="filter-panel">
+
+                    <div class="form-group search-group">
+                        <label for="searchInput">Cari menu</label>
+                        <input
+                            type="search"
+                            id="searchInput"
+                            placeholder="Contoh: nasi ayam, kopi..."
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="categoryFilter">Kategori</label>
+                        <select id="categoryFilter">
+                            <option value="Semua">Semua kategori</option>
+                            <option value="Makanan">Makanan</option>
+                            <option value="Camilan">Camilan</option>
+                            <option value="Minuman">Minuman</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="budgetFilter">Batas anggaran</label>
+                        <select id="budgetFilter">
+                            <option value="10000">Rp10.000</option>
+                            <option value="15000">Rp15.000</option>
+                            <option value="20000" selected>Rp20.000</option>
+                            <option value="30000">Rp30.000</option>
+                            <option value="999999999">Semua harga</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <!-- JavaScript akan memasukkan kartu menu di sini -->
+                <div class="menu-grid" id="menuGrid"></div>
+
+                <!-- Pesan ketika menu tidak ditemukan -->
+                <div class="empty-state" id="emptyState">
+                    <h3>Menu tidak ditemukan</h3>
+                    <p>Coba ubah kata pencarian atau filter yang kamu pilih.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- =========================
+             KERANJANG PESANAN
+        ========================== -->
+        <section class="cart-section" id="keranjang">
+            <div class="container">
+                <div class="cart-box">
+
+                    <h2>🛒 Pesananmu</h2>
+
+                    <!-- Daftar barang pesanan dibuat oleh JavaScript -->
+                    <div id="cartItems" aria-live="polite">
+                        <p class="cart-empty">Keranjang masih kosong.</p>
+                    </div>
+
+                    <!-- Total harga semua barang -->
+                    <div class="cart-total">
+                        <span>Total harga</span>
+                        <span id="cartTotal">Rp0</span>
+                    </div>
+
+                    <!-- Tombol mengosongkan keranjang -->
+                    <button class="clear-button" id="clearCart">
+                        Kosongkan keranjang
+                    </button>
+
+                    <p class="menu-description">
+                        Catatan: ini adalah simulasi pemilihan menu.
+                        Pemesanan belum dikirim ke pihak cafe.
+                    </p>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- =========================
+         BAGIAN PENUTUP
+    ========================== -->
+    <footer>
+        <div class="container">
+            <p><strong>MenuFlex.</strong> Menu digital yang praktis.</p>
+            <p>© 2026 MenuFlex. Dibuat untuk proyek pembelajaran web.</p>
+        </div>
+    </footer>
+
+    <script>
+        /* =========================
+           1. DATA MENU
+           Ubah data ini sesuai menu cafe.
+           Harga menggunakan angka tanpa titik.
+        ========================== */
+
+        const menus = [
+            {
+                id: 1,
+                name: "Nasi Ayam",
+                price: 18000,
+                category: "Makanan",
+                description: "Nasi hangat dengan ayam dan saus pilihan.",
+                emoji: "🍛",
+                available: true
+            },
+            {
+                id: 2,
+                name: "Mie Pedas",
+                price: 15000,
+                category: "Makanan",
+                description: "Mie gurih dengan rasa pedas yang nikmat.",
+                emoji: "🍜",
+                available: true
+            },
+            {
+                id: 3,
+                name: "Kentang Goreng",
+                price: 12000,
+                category: "Camilan",
+                description: "Kentang goreng renyah untuk teman santai.",
+                emoji: "🍟",
+                available: true
+            },
+            {
+                id: 4,
+                name: "Es Cokelat",
+                price: 10000,
+                category: "Minuman",
+                description: "Minuman cokelat dingin yang menyegarkan.",
+                emoji: "🥤",
+                available: true
+            },
+            {
+                id: 5,
+                name: "Kopi Susu",
+                price: 16000,
+                category: "Minuman",
+                description: "Perpaduan kopi dan susu yang nikmat.",
+                emoji: "🧋",
+                available: true
+            },
+            {
+                id: 6,
+                name: "Roti Bakar",
+                price: 14000,
+                category: "Camilan",
+                description: "Roti panggang dengan topping manis.",
+                emoji: "🍞",
+                available: false
+            },
+            {
+                id: 7,
+                name: "Nasi Goreng",
+                price: 20000,
+                category: "Makanan",
+                description: "Nasi goreng dengan bumbu khas cafe.",
+                emoji: "🍳",
+                available: true
+            },
+            {
+                id: 8,
+                name: "Lemon Tea",
+                price: 8000,
+                category: "Minuman",
+                description: "Teh lemon segar untuk menemani makanan.",
+                emoji: "🍋",
+                available: true
+            },
+            {
+                id: 9,
+                name: "Pisang Cokelat",
+                price: 12000,
+                category: "Camilan",
+                description: "Camilan pisang dengan cokelat manis.",
+                emoji: "🍌",
+                available: true
+            }
+        ];
+
+        /* =========================
+           2. MENGAMBIL ELEMEN HTML
+           Agar JavaScript dapat mengubah
+           isi halaman dan membaca input.
+        ========================== */
+
+        const menuGrid = document.getElementById("menuGrid");
+        const emptyState = document.getElementById("emptyState");
+
+        const searchInput = document.getElementById("searchInput");
+        const categoryFilter = document.getElementById("categoryFilter");
+        const budgetFilter = document.getElementById("budgetFilter");
+
+        const cartLink = document.getElementById("cartLink");
+        const cartCount = document.getElementById("cartCount");
+        const cartItems = document.getElementById("cartItems");
+        const cartTotal = document.getElementById("cartTotal");
+        const clearCart = document.getElementById("clearCart");
+
+        /* Keranjang menyimpan jumlah setiap menu berdasarkan ID. */
+        const cart = {};
+
+        /* Mengubah angka menjadi format rupiah Indonesia. */
+        function formatRupiah(number) {
+            return new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                maximumFractionDigits: 0
+            }).format(number);
+        }
+
+        /* =========================
+           3. MENAMPILKAN MENU
+        ========================== */
+
+        function displayMenus() {
+
+            // Mengambil nilai pencarian dan filter pengguna.
+            const keyword = searchInput.value.trim().toLowerCase();
+            const selectedCategory = categoryFilter.value;
+            const maxBudget = Number(budgetFilter.value);
+
+            // Menyaring menu berdasarkan nama, kategori, dan harga.
+            const filteredMenus = menus.filter(function(menu) {
+                const matchesName =
+                    menu.name.toLowerCase().includes(keyword);
+
+                const matchesCategory =
+                    selectedCategory === "Semua" ||
+                    menu.category === selectedCategory;
+
+                const matchesBudget = menu.price <= maxBudget;
+
+                return matchesName && matchesCategory && matchesBudget;
+            });
+
+            // Mengosongkan tampilan sebelum kartu baru dibuat.
+            menuGrid.innerHTML = "";
+
+            // Menampilkan pesan jika tidak ada hasil.
+            emptyState.style.display =
+                filteredMenus.length === 0 ? "block" : "none";
+
+            // Membuat kartu untuk setiap menu yang sesuai.
+            filteredMenus.forEach(function(menu) {
+
+                const card = document.createElement("article");
+                card.className = "menu-card";
+
+                // Status menu menentukan teks dan kondisi tombol.
+                const stockText = menu.available
+                    ? "✓ Tersedia"
+                    : "✕ Sedang habis";
+
+                const stockClass = menu.available
+                    ? "stock-status"
+                    : "stock-status unavailable";
+
+                // Membuat kartu menu menggunakan data di atas.
+                card.innerHTML = `
+                    <div class="menu-image" aria-hidden="true">
+                        ${menu.emoji}
+                    </div>
+
+                    <div class="menu-content">
+                        <div class="menu-top">
+                            <h3></h3>
+                            <span class="category-tag"></span>
+                        </div>
+
+                        <p class="menu-description"></p>
+
+                        <div class="menu-bottom">
+                            <span class="menu-price"></span>
+
+                            <button
+                                class="add-button"
+                                type="button"
+                                ${menu.available ? "" : "disabled"}
+                            >
+                                ${menu.available ? "+ Tambah" : "Menu habis"}
+                            </button>
+                        </div>
+
+                        <p class="${stockClass}">${stockText}</p>
+                    </div>
+                `;
+
+                // Memasukkan teks sebagai teks biasa, bukan HTML.
+                card.querySelector("h3").textContent = menu.name;
+                card.querySelector(".category-tag").textContent =
+                    menu.category;
+                card.querySelector(".menu-description").textContent =
+                    menu.description;
+                card.querySelector(".menu-price").textContent =
+                    formatRupiah(menu.price);
+
+                // Tombol menambahkan menu ke keranjang.
+                const addButton = card.querySelector(".add-button");
+
+                addButton.addEventListener("click", function() {
+                    addToCart(menu.id);
+                });
+
+                menuGrid.appendChild(card);
+            });
+        }
+
+        /* =========================
+           4. MENAMBAHKAN KE KERANJANG
+        ========================== */
+
+        function addToCart(menuId) {
+
+            const menu = menus.find(function(item) {
+                return item.id === menuId;
+            });
+
+            // Jangan menambahkan menu yang tidak tersedia.
+            if (!menu || !menu.available) {
+                return;
+            }
+
+            // Jika menu sudah ada, tambah jumlahnya.
+            // Jika belum ada, mulai dari jumlah satu.
+            if (cart[menuId]) {
+                cart[menuId]++;
+            } else {
+                cart[menuId] = 1;
+            }
+
+            // Perbarui tampilan keranjang.
+            displayCart();
+        }
+
+        /* =========================
+           5. MENGUBAH JUMLAH PESANAN
+        ========================== */
+
+        function changeQuantity(menuId, change) {
+
+            if (!cart[menuId]) {
+                return;
+            }
+
+            cart[menuId] += change;
+
+            // Hapus item jika jumlahnya nol.
+            if (cart[menuId] <= 0) {
+                delete cart[menuId];
+            }
+
+            displayCart();
+        }
+
+        /* Menghapus satu jenis menu dari keranjang. */
+        function removeFromCart(menuId) {
+            delete cart[menuId];
+            displayCart();
+        }
+
+        /* =========================
+           6. MENAMPILKAN KERANJANG
+        ========================== */
+
+        function displayCart() {
+
+            cartItems.innerHTML = "";
+
+            let totalPrice = 0;
+            let totalQuantity = 0;
+
+            // Menghitung total harga dan jumlah semua item.
+            Object.keys(cart).forEach(function(id) {
+
+                const menuId = Number(id);
+                const quantity = cart[menuId];
+
+                const menu = menus.find(function(item) {
+                    return item.id === menuId;
+                });
+
+                if (!menu || quantity <= 0) {
+                    return;
+                }
+
+                const subtotal = menu.price * quantity;
+
+                totalPrice += subtotal;
+                totalQuantity += quantity;
+
+                // Membuat satu baris untuk setiap jenis menu.
+                const item = document.createElement("div");
+                item.className = "cart-item";
+
+                item.innerHTML = `
+                    <div>
+                        <strong class="item-name"></strong>
+                        <small class="item-subtotal"></small>
+                    </div>
+
+                    <div class="cart-actions">
+                        <button
+                            class="quantity-button minus-button"
+                            type="button"
+                            aria-label="Kurangi jumlah"
+                        >−</button>
+
+                        <span class="item-quantity"></span>
+
+                        <button
+                            class="quantity-button plus-button"
+                            type="button"
+                            aria-label="Tambah jumlah"
+                        >+</button>
+
+                        <button
+                            class="remove-button"
+                            type="button"
+                        >Hapus</button>
+                    </div>
+                `;
+
+                item.querySelector(".item-name").textContent =
+                    menu.name;
+
+                item.querySelector(".item-subtotal").textContent =
+                    formatRupiah(subtotal);
+
+                item.querySelector(".item-quantity").textContent =
+                    quantity;
+
+                // Tombol mengurangi jumlah item.
+                item.querySelector(".minus-button")
+                    .addEventListener("click", function() {
+                        changeQuantity(menuId, -1);
+                    });
+
+                // Tombol menambah jumlah item.
+                item.querySelector(".plus-button")
+                    .addEventListener("click", function() {
+                        changeQuantity(menuId, 1);
+                    });
+
+                // Tombol menghapus item dari keranjang.
+                item.querySelector(".remove-button")
+                    .addEventListener("click", function() {
+                        removeFromCart(menuId);
+                    });
+
+                cartItems.appendChild(item);
+            });
+
+            // Jika keranjang kosong, tampilkan pemberitahuan.
+            if (totalQuantity === 0) {
+                cartItems.innerHTML =
+                    '<p class="cart-empty">Keranjang masih kosong.</p>';
+            }
+
+            // Perbarui jumlah item dan total harga.
+            cartCount.textContent = totalQuantity;
+            cartTotal.textContent = formatRupiah(totalPrice);
+        }
+
+        /* =========================
+           7. EVENT LISTENER
+           Menjalankan fungsi saat pengguna
+           berinteraksi dengan website.
+        ========================== */
+
+        // Filter diperbarui setiap kali input berubah.
+        searchInput.addEventListener("input", displayMenus);
+
+        categoryFilter.addEventListener("change", displayMenus);
+
+        budgetFilter.addEventListener("change", displayMenus);
+
+        // Tombol pesanan menggulir ke bagian keranjang.
+        cartLink.addEventListener("click", function() {
+            document.getElementById("keranjang").scrollIntoView({
+                behavior: "smooth"
+            });
+        });
+
+        // Mengosongkan semua pesanan setelah dikonfirmasi.
+        clearCart.addEventListener("click", function() {
+
+            const hasItems = Object.keys(cart).length > 0;
+
+            if (!hasItems) {
+                alert("Keranjang masih kosong.");
+                return;
+            }
+
+            const confirmed = confirm(
+                "Apakah kamu yakin ingin mengosongkan keranjang?"
+            );
+
+            if (confirmed) {
+                Object.keys(cart).forEach(function(id) {
+                    delete cart[id];
+                });
+
+                displayCart();
+            }
+        });
+
+        /* =========================
+           8. MENJALANKAN WEBSITE
+           Tampilkan menu dan keranjang
+           saat halaman pertama kali dibuka.
+        ========================== */
+
+        displayMenus();
+        displayCart();
+    </script>
+
+</body>
+</html>
